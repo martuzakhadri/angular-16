@@ -21,17 +21,19 @@ export class PostsServiceService {
   //  this.postUpdated.next([...this.posts])
   //  });
   // }
-  getPosts() {
+  getPosts(postsperpage:number,currentpage:number) {
+    const queryparams=`?pagesize=${postsperpage}&page=${currentpage}`
     this.http
       .get<{ message: string; posts: any }>(
-        "http://localhost:3000/api/posts"
+        "http://localhost:3000/api/posts"+queryparams
       )
       .pipe(map((postData)=>{
         return postData.posts.map((post:any)=>{
-          return{
-            title:post.title,
-            content:post.content,
-            id:post._id
+          return {
+            title: post.title,
+            content: post.content,
+            id: post._id,
+            imagePath: post.imagePath
           };
         });
       }))
@@ -51,13 +53,23 @@ getpostupdateListner(){
 
   // }
 
-  addPost(title: string, content: string) {
-    const post: Post = { id :'', title: title, content: content };
+
+  addPost(title: string, content: string,image:File) {
+   // const post: Post = { id :'', title: title, content: content};
+    const postData = new FormData();
+    postData.append("title",title),
+    postData.append("content",content),
+    postData.append("image",image,title)
     this.http
-      .post<{ message: string,postId:string }>("http://localhost:3000/api/posts", post)
+      .post<{ message: string,post:Post }>("http://localhost:3000/api/posts",
+      postData)
       .subscribe(responseData => {
-       const id = responseData.postId;
-       post.id = id;
+        const post: Post = {
+          id: responseData.post.id,
+          title: title,
+          content: content,
+          imagePath: responseData.post.imagePath
+        };
         this.posts.push(post);
         this.postUpdated.next([...this.posts]);
         this.router.navigate(["/"]);

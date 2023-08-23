@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Post } from '../post.model';
 import { PostsServiceService } from '../posts-service.service';
 import { Subscription } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-post-list',
@@ -17,10 +18,13 @@ export class PostListComponent implements OnInit,OnDestroy{
   // ]
   posts: Post[] = [];
   private postSub!: Subscription;
+  totalPosts = 10;
+  postperpage= 5;
+  pagesizeOption= [1,2,5,10]
   constructor(public postservice:PostsServiceService){}
   
   ngOnInit(){
-    this.postservice.getPosts();
+    this.postservice.getPosts(this.postperpage,1);
     console.log(this.posts)
     this.postservice.getpostupdateListner().subscribe((posts:Post[])=>{
     this.posts=posts;
@@ -32,5 +36,9 @@ export class PostListComponent implements OnInit,OnDestroy{
   }
   deletepost(postId:string){
     this.postservice.deletePost(postId);
+  }
+  onchangedpage(pageData:PageEvent){
+    
+
   }
 }

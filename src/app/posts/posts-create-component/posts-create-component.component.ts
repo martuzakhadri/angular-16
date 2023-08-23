@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Post } from '../post.model';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { PostsServiceService } from '../posts-service.service';
-// import { mimeType } from "./mime-type.validator";
+import { mimeType } from "./mime-type.validators";
 @Component({
   selector: 'app-posts-create-component',
   templateUrl: './posts-create-component.component.html',
@@ -23,7 +23,7 @@ ngOnInit() {
       validators: [Validators.required, Validators.minLength(3)]
     }),
     content: new FormControl(null, { validators: [Validators.required] }),
-    image: new FormControl(null,{ validators: [Validators.required] })
+    image: new FormControl(null,{ validators: [Validators.required],asyncValidators:[mimeType] })
   });
  
 }
@@ -35,7 +35,7 @@ onaddpost(){
     return;
   }
 
-this.postsService.addPost(this.form.value.title,this.form.value.content)
+this.postsService.addPost(this.form.value.title,this.form.value.content,this.form.value.image)
 this.form.reset();
 }
 
