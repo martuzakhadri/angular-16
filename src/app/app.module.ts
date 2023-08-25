@@ -20,13 +20,17 @@ import {MatCardModule} from '@angular/material/card';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { SignInComponent } from './auth/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PostsCreateComponentComponent,
     HeaderComponentComponent,
-    PostListComponent
+    PostListComponent,
+    SignUpComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
