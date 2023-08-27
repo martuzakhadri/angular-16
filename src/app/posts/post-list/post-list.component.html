@@ -7,7 +7,7 @@
           <img [src]="post.imagePath" [alt]="post.title">
         </div>
       <p>{{post.content}}</p>
-      <mat-action-row>
+      <mat-action-row *ngIf="userisAuthenticated">
         <button mat-raised-button color="primary">EDIT</button>
         <button mat-raised-button color="warn" (click)="deletepost(post.id)">DELETE</button>
       </mat-action-row>
